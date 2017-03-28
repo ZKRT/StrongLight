@@ -50,7 +50,7 @@ int main()
 //					if (stand_count - TimingDelay > 500)
 					if (stand_count - TimingDelay > 2000)  //modify by yanly
 					{
-						bat_check();
+//						bat_check();
 					}
 				}
 			}
