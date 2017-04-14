@@ -22,7 +22,7 @@ void LED_Init(void)
 	
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;			//12V使能和5VMOS使能
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
-	GPIO_SetBits(GPIOA, GPIO_Pin_6 | GPIO_Pin_7);
+	//GPIO_SetBits(GPIOA, GPIO_Pin_6 | GPIO_Pin_7);   					//2017-4-11 by zhr comment
 	
 	delay_ms(500);
 }
