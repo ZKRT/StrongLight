@@ -4,7 +4,7 @@
 #include "sys.h"
 
 extern uint32_t stand_count;
-void zkrt_decode(void);
-
+void app_msg_handle(void);
+void check_light_value(void);
 #endif
 

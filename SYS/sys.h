@@ -1,9 +1,13 @@
 #ifndef _SYS_H
 #define _SYS_H
 
-#include "stm32f0xx.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
+#include "stm32f0xx.h"
+typedef uint32_t  u32;
+typedef uint16_t u16;
+typedef uint8_t  u8;
 
 #define MAVLINK_TX_INIT_VAL 0XFFFFFFFF
 

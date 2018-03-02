@@ -1,20 +1,23 @@
 #include "light.h"
 #include "zkrt.h"	//调用需要
 #include "can.h"	//解析CAN的字节
+#include "appcan.h"
 
 uint32_t stand_count = 0XFFFFFFFF;
-uint8_t can_value;
-zkrt_packet_t zkrt_packet_buffer;
-
-void zkrt_decode(void)
+//APP数据解析处理
+recv_zkrt_packet_handlest recv_handle={0};
+zkrt_packet_t *sub_throw_zkrt_packet_can1_rx = &recv_handle.packet;
+void app_msg_handle(void)
 {
-	while (CAN1_rx_check() == 1)
+	if(zkrt_decode(&recv_handle) ==0)
+		return;
+	
+	switch (sub_throw_zkrt_packet_can1_rx->command)
 	{
-		can_value = CAN1_rx_byte();
-		if (zkrt_decode_char(&zkrt_packet_buffer,can_value)==1)
+		case ZK_COMMAND_NORMAL:          
 		{
 			stand_count = TimingDelay;
-			if (zkrt_packet_buffer.data[0] == 1)
+			if (sub_throw_zkrt_packet_can1_rx->data[0] == 1)
 			{
 				GPIO_SetBits(GPIOA, GPIO_Pin_6);
 //				printf("can 12v on\n");
@@ -23,7 +26,18 @@ void zkrt_decode(void)
 			{
 				GPIO_ResetBits(GPIOA, GPIO_Pin_6);
 //				printf("can 12v off\n");
-			}
+			}			
+			break;
+		}
+		default:
+		{
+			break;
 		}
 	}
+}
+//检查当前灯光值
+void check_light_value(void)
+{
+	uint8_t value = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6);
+	lightchb->v1 = value;
 }
