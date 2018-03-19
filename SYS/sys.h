@@ -15,6 +15,8 @@ extern volatile uint32_t TimingDelay;				//设置为全局变量，不断的做减法
 extern volatile uint32_t led_rx_count;
 extern volatile uint32_t led_tx_count;
 extern volatile uint32_t _10ms_count;
+extern volatile uint32_t _Lightms_count;
+extern volatile uint32_t _Testms_count;
 extern volatile uint32_t _10ms_flag;
 extern volatile uint32_t _key_count;
 

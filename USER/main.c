@@ -25,6 +25,41 @@ void bsp_init(void)
 	CAN_Mode_Init(CAN_Mode_Normal);
 	KEY_Init();
 }
+extern uint8_t BlinkFlag ;
+void LightBlink(void)
+{
+		if(BlinkFlag==1){
+			GPIO_SetBits(GPIOA, GPIO_Pin_6);
+				printf("key 12v on\n");
+		}
+	
+	 else if(BlinkFlag == 2)
+	 {
+			if (_Lightms_count - TimingDelay >= 50)								//10ms一个时间片
+			{
+				_Lightms_count = TimingDelay;
+				 if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6) == 0)
+					{
+						GPIO_SetBits(GPIOA, GPIO_Pin_6);
+			//			printf("key 12v on\n");
+					}
+					else
+					{
+						GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+			//			printf("key 12v off\n");
+					}
+			}
+		}
+	 else if(BlinkFlag == 3)
+	 {
+			GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+//			printf("key 12v off\n");
+	 }
+}
+
+/*
+2018-2-28  增加爆闪功能，控制LED灯
+*/
 int main()
 {
   bsp_init();
@@ -34,6 +69,7 @@ int main()
 	{		
 		app_msg_handle();
 		KEY_Rock();
+		LightBlink();
 		if (_10ms_count - TimingDelay >= 10)								//10ms一个时间片
 		{
 			_10ms_count = TimingDelay;

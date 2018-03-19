@@ -19,6 +19,7 @@ void KEY_Init(void)
 uint8_t key_up=1;					//KEY_UP=1代表着已经松开了
 uint8_t Key_value = 1;
 
+uint8_t BlinkFlag = 0;
 void KEY_Rock(void)
 {
 	Key_value = GPIO_ReadInputDataBit(GPIOB,GPIO_Pin_4);
@@ -26,22 +27,30 @@ void KEY_Rock(void)
 	if((key_up == 1)&&(Key_value == 0)&&(_key_count - TimingDelay > 500))
 	{
 		_key_count = TimingDelay;
-		key_up=0;
+		key_up=2;
 		stand_count = TimingDelay;
-		if (GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_6) == 0)
-		{
-			GPIO_SetBits(GPIOA, GPIO_Pin_6);
-//			printf("key 12v on\n");
-		}
-		else
-		{
-			GPIO_ResetBits(GPIOA, GPIO_Pin_6);
-//			printf("key 12v off\n");
-		}
+		BlinkFlag = 1;
 	}
-	else															
+	else if((key_up == 2)&&(Key_value == 0)&&(_key_count - TimingDelay > 500))
 	{
-		key_up = 1;
+		_key_count = TimingDelay;
+		key_up=3;
+		stand_count = TimingDelay;
+		BlinkFlag = 3;
+	}
+	else if((key_up == 3)&&(Key_value == 0)&&(_key_count - TimingDelay > 500))
+	{
+		_key_count = TimingDelay;
+		key_up=4;
+		stand_count = TimingDelay;
+		BlinkFlag = 2;
+	}
+	else if((key_up == 4)&&(Key_value == 0)&&(_key_count - TimingDelay > 500))
+	{
+		_key_count = TimingDelay;
+		key_up=1;
+		stand_count = TimingDelay;
+		BlinkFlag = 3;
 	}
 }
  

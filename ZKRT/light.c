@@ -5,6 +5,10 @@
 
 uint32_t stand_count = 0XFFFFFFFF;
 //APP数据解析处理
+uint8_t zkrt_SetFlag = 0;
+uint8_t zkrt_SetFlagCounter = 0;
+uint8_t zkrt_LastSetFlag = 1;
+extern uint8_t BlinkFlag ;
 recv_zkrt_packet_handlest recv_handle={0};
 zkrt_packet_t *sub_throw_zkrt_packet_can1_rx = &recv_handle.packet;
 void app_msg_handle(void)
@@ -19,20 +23,30 @@ void app_msg_handle(void)
 			stand_count = TimingDelay;
 			if (sub_throw_zkrt_packet_can1_rx->data[0] == 1)
 			{
-				GPIO_SetBits(GPIOA, GPIO_Pin_6);
-//				printf("can 12v on\n");
+					if(zkrt_SetFlag!=zkrt_LastSetFlag)
+					{
+						zkrt_SetFlag ++;
+					
+						if(zkrt_SetFlag>=3) zkrt_SetFlag = 1;
+					
+						zkrt_LastSetFlag = zkrt_SetFlag;
+						if(zkrt_SetFlag==1)
+						{
+							BlinkFlag = 1;
+						}
+						else if(zkrt_SetFlag==2)
+						{
+							BlinkFlag = 2;
+						}
+					}
 			}
 			else
 			{
-				GPIO_ResetBits(GPIOA, GPIO_Pin_6);
-//				printf("can 12v off\n");
-			}			
-			break;
-		}
-		default:
-		{
-			break;
-		}
+//				GPIO_ResetBits(GPIOA, GPIO_Pin_6);
+					BlinkFlag = 3;  // Turn Off Light
+					zkrt_LastSetFlag = 0x08;
+			}
+		}	
 	}
 }
 //检查当前灯光值

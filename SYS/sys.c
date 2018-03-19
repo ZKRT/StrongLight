@@ -85,6 +85,8 @@ volatile uint32_t TimingDelay = 0XFFFFFFFF;				//设置为全局变量，不断的做减法
 volatile uint32_t led_rx_count = 0XFFFFFFFF;
 volatile uint32_t led_tx_count = 0XFFFFFFFF;
 volatile uint32_t _10ms_count = 0XFFFFFFFF;
+volatile uint32_t _Lightms_count = 0XFFFFFFFF;
+volatile uint32_t _Testms_count = 0XFFFFFFFF;
 volatile uint32_t _10ms_flag = 0;
 volatile uint32_t _key_count = 0XFFFFFFFF;
 
